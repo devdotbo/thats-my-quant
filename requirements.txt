@@ -1,0 +1,62 @@
+# Core Backtesting Libraries
+vectorbt==0.26.2
+backtrader==1.9.78.123
+
+# Data Processing
+pandas==2.1.4
+numpy==1.26.2
+pyarrow==14.0.2
+
+# AWS S3 Access for Polygon.io
+boto3==1.34.14
+
+# Data Visualization
+matplotlib==3.8.2
+plotly==5.18.0
+
+# Configuration
+python-dotenv==1.0.0
+pyyaml==6.0.1
+
+# Development Tools
+pytest==7.4.4
+pytest-cov==4.1.0
+pytest-asyncio==0.23.3
+mypy==1.8.0
+ruff==0.1.11
+black==24.1.1
+
+# Type Stubs
+types-requests==2.31.0.20240106
+types-PyYAML==6.0.12.12
+
+# Performance & Profiling
+memory-profiler==0.61.0
+psutil==5.9.8
+
+# Utilities
+requests==2.31.0
+tqdm==4.66.1
+click==8.1.7
+
+# Jupyter Support
+jupyter==1.0.0
+ipykernel==6.28.0
+nbconvert==7.14.2
+
+# ML Libraries (optional, for future ML strategies)
+scikit-learn==1.4.0
+xgboost==2.0.3
+lightgbm==4.2.0
+
+# Additional Analytics
+scipy==1.11.4
+statsmodels==0.14.1
+
+# Time Series Analysis
+ta-lib==0.4.28  # Technical indicators
+pandas-ta==0.3.14b0  # More technical indicators
+
+# Logging and Monitoring
+loguru==0.7.2
+structlog==24.1.0

@@ -40,6 +40,11 @@ python benchmarks/hardware_test.py
 
 ## Development Workflow
 
+### Python File Permissions
+- **NEVER use chmod on Python files** - Python files don't need execute permissions
+- Python files are executed with `python filename.py`, not `./filename.py`
+- Keep Python files with standard 644 permissions (rw-r--r--)
+
 ### Git Best Practices
 1. **ALWAYS commit after completing each task**
    - Use descriptive commit messages

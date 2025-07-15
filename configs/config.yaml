@@ -1,0 +1,164 @@
+# That's My Quant - Configuration File
+
+# Data Configuration
+data:
+  cache_dir: "./data/cache"
+  raw_dir: "./data/raw"
+  processed_dir: "./data/processed"
+  max_cache_size_gb: 100
+  
+  # Parquet settings for optimal performance
+  parquet:
+    compression: "snappy"  # Fast read/write
+    row_group_size: 100000
+    use_dictionary: true
+    use_byte_stream_split: true
+  
+  # Data retention
+  retention_days: 90  # Keep data for 90 days before cleanup
+
+# Polygon.io Configuration
+polygon:
+  # S3 flat files configuration
+  s3:
+    endpoint: "https://files.polygon.io"
+    bucket: "flatfiles"
+    region: "us-east-1"
+    
+  # Data types to download
+  data_types:
+    - "trades"
+    - "quotes"
+    - "aggregates"
+    
+  # Default symbols for initial testing
+  default_symbols:
+    - "SPY"
+    - "QQQ"
+    - "AAPL"
+    - "MSFT"
+    - "GOOGL"
+    - "AMZN"
+    - "TSLA"
+    - "NVDA"
+    - "META"
+    - "JPM"
+    
+  # Rate limiting
+  rate_limit:
+    requests_per_minute: 100
+    concurrent_downloads: 5
+
+# Backtesting Configuration
+backtesting:
+  # Default parameters
+  initial_capital: 100000.0
+  
+  # Transaction costs
+  costs:
+    commission_rate: 0.001  # 0.1% per trade
+    commission_min: 1.0     # Minimum $1 commission
+    slippage_model: "fixed" # fixed or variable
+    slippage_bps: 5         # 5 basis points
+    spread_model: "dynamic" # fixed or dynamic
+    
+  # Risk management
+  risk:
+    max_position_size: 0.1    # 10% of portfolio
+    max_portfolio_heat: 0.06  # 6% total risk
+    stop_loss_default: 0.02   # 2% stop loss
+    max_leverage: 1.0         # No leverage by default
+    
+  # Performance targets
+  performance:
+    target_backtest_time_seconds: 5.0  # 1 year minute data
+    max_memory_usage_gb: 32.0
+    
+# Optimization Configuration
+optimization:
+  # Walk-forward settings
+  walk_forward:
+    train_periods: 252  # 1 year
+    test_periods: 63    # 3 months
+    step_size: 21       # 1 month
+    min_trades: 100     # Minimum trades for valid test
+    
+  # Parameter search
+  parameter_search:
+    method: "grid"      # grid, random, or bayesian
+    max_iterations: 1000
+    
+  # Validation
+  validation:
+    monte_carlo_simulations: 1000
+    confidence_level: 0.95
+    
+# Strategy Configuration
+strategies:
+  # ORB strategy settings
+  orb:
+    opening_minutes: 5      # 5-minute opening range
+    max_holding_period: 390 # Full trading day (6.5 hours)
+    stop_loss_atr: 2.0     # Stop loss in ATR units
+    take_profit_ratio: 2.0  # Risk/reward ratio
+    
+  # Moving average settings
+  moving_average:
+    fast_periods: [10, 20, 50]
+    slow_periods: [50, 100, 200]
+    
+# System Configuration
+system:
+  # Parallel processing
+  n_jobs: -1  # Use all available cores
+  chunk_size: 10000  # Rows per chunk for processing
+  
+  # Memory management
+  low_memory_mode: false
+  gc_threshold: 0.8  # Garbage collect at 80% memory usage
+  
+  # Logging
+  logging:
+    level: "INFO"
+    format: "json"
+    file: "./logs/backtest.log"
+    rotation: "10 MB"
+    retention: 7  # Keep logs for 7 days
+    
+# Benchmarking Configuration
+benchmarking:
+  # Standard test parameters
+  standard_test:
+    symbols: ["SPY"]
+    periods: 252  # 1 year
+    frequency: "1min"
+    
+  # Performance thresholds
+  thresholds:
+    memory_bandwidth_gbps: 200
+    matrix_ops_gflops: 500
+    data_loading_mbps: 100
+    
+# Reporting Configuration
+reporting:
+  # Output formats
+  formats:
+    - "html"
+    - "json"
+    - "csv"
+    
+  # Report sections
+  include:
+    - "performance_metrics"
+    - "trade_analysis"
+    - "risk_metrics"
+    - "parameter_sensitivity"
+    - "walk_forward_results"
+    
+  # Visualization
+  charts:
+    - "equity_curve"
+    - "drawdown"
+    - "returns_distribution"
+    - "trade_pnl"
+    - "parameter_heatmap"
