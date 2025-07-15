@@ -65,6 +65,10 @@
   - ❌ Add symbol extraction from daily files
   - ❌ Update tests for new structure
 - **Critical Discovery**: Data organized by DATE, not symbol
+  - Path structure: `us_stocks_sip/minute_aggs_v1/YYYY/MM/YYYY-MM-DD.csv.gz`
+  - Each daily file contains ALL symbols (~15-20MB compressed)
+  - Must download daily files then extract specific symbols
+  - See POLYGON_DATA_INSIGHTS.md for full details
 
 #### Cache Manager (src/data/cache.py)
 - **Status**: NOT STARTED
@@ -194,7 +198,9 @@ scripts/
 - All utilities committed and tested
 - Download scripts created and tested
 - Full year download in progress (./scripts/download_full_year.sh)
+- Download Progress: 7/12 months complete (~2.1GB downloaded as of July 15, 2025)
 - Test data successfully extracted
+- Next: Run ./scripts/extract_symbols_year.sh when download completes
 
 ## Critical Path Forward
 1. **Immediate**: Complete full year download & extract symbols
