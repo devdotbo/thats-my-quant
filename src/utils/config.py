@@ -6,8 +6,7 @@ Provides type-safe configuration loading with environment variable override supp
 import os
 import yaml
 from pathlib import Path
-from typing import Dict, Any, Optional, Union, TypeVar, cast
-from dataclasses import dataclass
+from typing import Dict, Any, Optional, Union
 import copy
 
 

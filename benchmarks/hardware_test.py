@@ -302,27 +302,27 @@ class HardwareBenchmark:
         
         # Memory bandwidth
         mem = self.results['benchmarks']['memory']
-        print(f"\nMemory Bandwidth:")
+        print("\nMemory Bandwidth:")
         print(f"  Sequential Read:  {mem['sequential_read_gbps']:.1f} GB/s")
         print(f"  Sequential Write: {mem['sequential_write_gbps']:.1f} GB/s")
         print(f"  Copy Bandwidth:   {mem['copy_gbps']:.1f} GB/s")
         
         # CPU performance
         cpu = self.results['benchmarks']['numpy']
-        print(f"\nCPU Performance:")
+        print("\nCPU Performance:")
         print(f"  Matrix Multiply:  {cpu['matmul_gflops']:.1f} GFLOPS")
         print(f"  FFT Performance:  {cpu['fft_msamples_per_sec']:.1f} MSamples/sec")
         print(f"  Vector Ops:       {cpu['vector_ops_gflops']:.1f} GFLOPS")
         
         # I/O performance
         io = self.results['benchmarks']['io']
-        print(f"\nI/O Performance:")
+        print("\nI/O Performance:")
         print(f"  NumPy Save: {io['numpy_save_mbps']:.1f} MB/s")
         print(f"  NumPy Load: {io['numpy_load_mbps']:.1f} MB/s")
         
         # Financial calculations
         fin = self.results['benchmarks']['financial']
-        print(f"\nFinancial Calculations:")
+        print("\nFinancial Calculations:")
         print(f"  Moving Averages:  {fin['moving_avg_calc_per_sec']:.0f} calc/sec")
         print(f"  Returns:          {fin['returns_calc_per_sec']:.0f} calc/sec")
         print(f"  Volatility:       {fin['volatility_windows_per_sec']:.0f} windows/sec")

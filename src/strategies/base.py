@@ -6,7 +6,6 @@ All trading strategies must inherit from this abstract base class
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Optional, List, Union
 import pandas as pd
-import numpy as np
 from dataclasses import dataclass
 from enum import Enum
 

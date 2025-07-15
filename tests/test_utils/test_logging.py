@@ -4,12 +4,9 @@ Tests for logging setup utility
 
 import pytest
 import tempfile
-import logging
 from pathlib import Path
 import json
 import time
-from unittest.mock import Mock, patch
-import sys
 
 from src.utils.logging import (
     setup_logging, 

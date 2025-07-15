@@ -5,11 +5,9 @@ Pytest configuration and fixtures for That's My Quant
 import pytest
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
 from pathlib import Path
 import tempfile
 import shutil
-from typing import Dict, Any
 import os
 
 
@@ -234,7 +232,7 @@ def pytest_collection_modifyitems(config, items):
     try:
         import torch
         has_gpu = torch.backends.mps.is_available()
-    except:
+    except ImportError:
         has_gpu = False
     
     skip_polygon = pytest.mark.skip(reason="Polygon.io credentials not available")

@@ -341,7 +341,7 @@ class PolygonConnectionTest:
         # Sample download
         sample = self.results['tests'].get('sample_download', {})
         if sample.get('status') == 'success':
-            print(f"\n✅ Successfully downloaded sample data")
+            print("\n✅ Successfully downloaded sample data")
             print(f"  Symbol: {sample.get('symbol')}")
             print(f"  Shape: {sample.get('shape')}")
         
