@@ -2,6 +2,8 @@
 
 > "That's my quant." - Jared Vennett, The Big Short
 
+![That's My Quant](quant-quantitative.gif)
+
 A comprehensive quantitative trading backtesting system for educational purposes, inspired by the world of quantitative finance portrayed in popular culture.
 
 ## Educational Disclaimer
