@@ -53,17 +53,16 @@
 
 ### Data Pipeline ⏳
 #### Polygon Downloader (src/data/downloader.py)
-- **Status**: PARTIAL - Needs major update
-- **Completed**:
-  - ✅ S3 client wrapper with correct credentials
+- **Status**: COMPLETE - Updated for date-based structure ✅
+- **Features**:
+  - ✅ S3 client wrapper with correct credentials (API key as secret)
+  - ✅ Date-based file downloads (daily files)
+  - ✅ Symbol extraction from daily files
   - ✅ Concurrent download support
   - ✅ Progress tracking with tqdm
   - ✅ Retry logic with exponential backoff
-  - ✅ Integration tests (no mocks!)
-- **Needs Update**:
-  - ❌ Assumes symbol-based structure (need date-based)
-  - ❌ Add symbol extraction from daily files
-  - ❌ Update tests for new structure
+  - ✅ Complete workflow: download_and_extract_symbols()
+  - ✅ Updated tests for date-based structure
 - **Critical Discovery**: Data organized by DATE, not symbol
   - Path structure: `us_stocks_sip/minute_aggs_v1/YYYY/MM/YYYY-MM-DD.csv.gz`
   - Each daily file contains ALL symbols (~15-20MB compressed)
@@ -198,18 +197,19 @@ scripts/
 - All utilities committed and tested
 - Download scripts created and tested
 - Full year download in progress (./scripts/download_full_year.sh)
-- Download Progress: 7/12 months complete (~2.1GB downloaded as of July 15, 2025)
+- Download Progress: 8/12 months complete (~2.6GB downloaded as of July 15, 2025)
 - Test data successfully extracted
+- Python downloader updated for date-based structure ✅
 - Next: Run ./scripts/extract_symbols_year.sh when download completes
 
 ## Critical Path Forward
-1. **Immediate**: Complete full year download & extract symbols
-2. **Next**: Update Python downloader for date-based structure
-3. **Then**: Implement cache manager for daily files
-4. **Then**: Create data preprocessor
-5. **Then**: VectorBT engine integration
-6. **Finally**: Example strategies with tests
-7. **Week 2**: Full integration testing
+1. **Immediate**: Complete full year download & extract symbols (8/12 months done)
+2. **Next**: Implement cache manager for daily files
+3. **Then**: Create data preprocessor
+4. **Then**: VectorBT engine integration
+5. **Then**: Example strategies with tests
+6. **Finally**: Full integration testing
+7. **Week 2**: Production deployment readiness
 
 ## Performance Targets
 - [x] Memory bandwidth: 22.5 GB/s (below target but functional)
