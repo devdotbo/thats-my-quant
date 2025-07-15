@@ -65,7 +65,7 @@ That's My Quant is a Python-based backtesting system that allows you to test tra
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/thats-my-quant.git
+git clone https://github.com/devdotbo/thats-my-quant.git
 cd thats-my-quant
 ```
 
