@@ -33,21 +33,21 @@ That's My Quant is a Python-based backtesting system that allows you to test tra
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        User Interface Layer                       │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────┐    │
-│  │   Jupyter   │  │     CLI      │  │    Analysis      │    │
-│  │  Notebooks  │  │  Interface   │  │    Dashboard     │    │
-│  └─────────────┘  └──────────────┘  └─────────────────────┘    │
+│                        User Interface Layer                     │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────────┐     │
+│  │   Jupyter   │  │     CLI      │  │    Analysis         │     │
+│  │  Notebooks  │  │  Interface   │  │    Dashboard        │     │
+│  └─────────────┘  └──────────────┘  └─────────────────────┘     │
 └─────────────────────────────────────────────────────────────────┘
                                 │
 ┌─────────────────────────────────────────────────────────────────┐
-│                      Application Layer                            │
-│         Strategy Engine │ Backtesting │ Risk Management          │
+│                      Application Layer                          │
+│         Strategy Engine │ Backtesting │ Risk Management         │
 └─────────────────────────────────────────────────────────────────┘
                                 │
 ┌─────────────────────────────────────────────────────────────────┐
-│                        Data Layer                                 │
-│         Polygon.io │ Cache Manager │ Data Preprocessing          │
+│                        Data Layer                               │
+│         Polygon.io │ Cache Manager │ Data Preprocessing         │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
