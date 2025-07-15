@@ -1,1 +1,153 @@
+# Secrets and credentials
 .env
+.env.*
+*.key
+*.pem
+*.p12
+secrets/
+credentials/
+
+# Data files
+data/
+*.csv
+*.parquet
+*.h5
+*.hdf5
+*.feather
+*.pkl
+*.pickle
+*.json
+*.xlsx
+*.xls
+
+# Large files
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Cache and temporary files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.cache/
+.temp/
+.tmp/
+tmp/
+temp/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.conda/
+conda-env/
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python specific
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Results and outputs
+results/
+output/
+outputs/
+reports/*.html
+reports/*.pdf
+backtest_results/
+
+# Model files
+models/
+*.joblib
+*.h5
+*.pb
+*.pth
+*.onnx
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Local configuration
+config.local.yaml
+settings.local.json
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# MacOS specific
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows specific
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux specific
+.directory
+.Trash-*
+
+# Node (if using any JS tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Documentation build
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Profiling
+*.prof
+*.lprof
+
+# Secrets patterns
+*_secret*
+*_private*
+api_keys.py
