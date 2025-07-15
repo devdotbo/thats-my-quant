@@ -192,11 +192,18 @@ Before marking ANY feature as complete:
 1. **Unit Tests**: `pytest tests/ -v --cov=src --cov-report=html`
    - Minimum 80% coverage
    - Test edge cases
-   - Mock external dependencies
+   - **NEVER mock external dependencies** - use real services
 
 2. **Type Checking**: `mypy src/ --strict`
    - No type errors allowed
    - Explicit types for all public APIs
+
+### Testing Philosophy
+- **NEVER mock external services in tests** - Use real connections and real data
+- If a service is unavailable, skip the test with appropriate markers
+- Integration tests should test actual integration, not mocked behavior
+- Use test data files and fixtures, but connect to real services
+- Real tests catch real problems that mocks would miss
 
 3. **Code Quality**: `ruff check . && ruff format .`
    - Must pass all linting rules
@@ -309,6 +316,24 @@ polygon_io_s3_bucket=flatfiles
 - Quotes  
 - Minute aggregates
 - Day aggregates
+
+### Exploring Bucket Structure
+```bash
+# List all files (WARNING: Very large output ~900k+ files)
+rclone ls s3polygon:flatfiles > data/polygon_bucket_structure.txt
+
+# List directory structure only
+rclone lsd s3polygon:flatfiles -R > data/polygon_bucket_dirs.txt
+
+# Find specific data types
+rclone ls s3polygon:flatfiles --include "**/SPY.csv.gz" --max-depth 4
+
+# Explore specific paths
+rclone ls s3polygon:flatfiles/us_stocks_sip/ --max-depth 2
+```
+
+### Important Discovery
+**S3 Credentials**: Use `polygon_io_api_key` as the S3 secret access key (not `polygon_io_s3_access_secret`). This was discovered through rclone testing and is critical for successful connections.
 
 ## Strategy Development Guidelines
 

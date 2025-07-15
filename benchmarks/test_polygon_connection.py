@@ -59,11 +59,12 @@ class PolygonConnectionTest:
         
         try:
             # Create S3 client
+            # IMPORTANT: Use API key as S3 secret (discovered via rclone testing)
             self.s3_client = boto3.client(
                 's3',
                 endpoint_url=self.s3_endpoint,
                 aws_access_key_id=self.s3_access_key,
-                aws_secret_access_key=self.s3_secret
+                aws_secret_access_key=self.api_key  # Use API key, not S3 secret!
             )
             
             # Test listing objects (limited to check connection)
