@@ -151,3 +151,19 @@ docs/_templates/
 *_secret*
 *_private*
 api_keys.py
+
+# Benchmark results
+benchmarks/results/
+benchmark_results_*.json
+
+# Test artifacts
+test_*.log
+temp_benchmark/
+.hypothesis/
+
+# Data cache
+cache/
+*.cache
+
+# Compressed files from loguru
+*.gz
