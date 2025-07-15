@@ -13,9 +13,13 @@ from typing import List, Dict, Any, Optional, Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
 from tqdm import tqdm
+from dotenv import load_dotenv
 
 from src.utils.config import get_config
 from src.utils.logging import get_logger
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class PolygonDownloader:
