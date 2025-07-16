@@ -182,14 +182,15 @@ class TestCacheManager:
     
     def test_cleanup_old_files(self, cache_manager, test_files):
         """Test cleaning up old files"""
+        from datetime import datetime, timedelta
+        
         # Cache a file
         cache_manager.cache_file(test_files['small'], 'old_file')
         
         # Manually set old access time
         with cache_manager._lock:
-            old_time = (time.time() - 40 * 24 * 3600) * 1000  # 40 days ago
-            cache_manager._metadata['files']['old_file']['last_access'] = \
-                cache_manager._metadata['files']['old_file']['created']
+            old_time = (datetime.now() - timedelta(days=40)).isoformat()
+            cache_manager._metadata['files']['old_file']['last_access'] = old_time
             cache_manager._save_metadata()
         
         # Cache a recent file
