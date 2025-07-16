@@ -13,10 +13,23 @@ from .walk_forward import (
     OptimizationMetric
 )
 
+from .monte_carlo import (
+    MonteCarloValidator,
+    MonteCarloResult,
+    ResamplingMethod,
+    ConfidenceLevel
+)
+
 __all__ = [
+    # Walk-Forward
     'WalkForwardValidator',
     'WalkForwardWindow', 
     'WalkForwardResult',
     'WindowType',
-    'OptimizationMetric'
+    'OptimizationMetric',
+    # Monte Carlo
+    'MonteCarloValidator',
+    'MonteCarloResult',
+    'ResamplingMethod',
+    'ConfidenceLevel'
 ]
