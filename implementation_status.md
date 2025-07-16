@@ -121,20 +121,30 @@
 - **Tests**: 12/12 passing including performance tests
 
 #### Transaction Costs (src/backtesting/costs.py)
-- **Status**: NOT STARTED
-- **Requirements**:
-  - Commission models
-  - Spread estimation
-  - Slippage calculation
-  - Market impact
+- **Status**: COMPLETE ✅
+- **Features**:
+  - ✅ Commission models (per-share, per-trade, percentage, tiered)
+  - ✅ Spread estimation with actual data or defaults
+  - ✅ Market impact models (linear, square-root, power-law)
+  - ✅ Slippage calculation with market condition adjustments
+  - ✅ TransactionCostEngine orchestrating all components
+  - ✅ Predefined cost profiles for different asset classes
+  - ✅ Time-of-day and volatility adjustments
+  - ✅ Performance: 577,979 trades/second
+- **Tests**: 26/26 passing
 
-### Strategy Examples ⏳
+### Strategy Examples ✅
 #### Moving Average (src/strategies/examples/moving_average.py)
-- **Status**: NOT STARTED
-- **Requirements**:
-  - Inherit from BaseStrategy
-  - MA crossover logic
-  - Parameter optimization ready
+- **Status**: COMPLETE ✅
+- **Features**:
+  - ✅ Flexible MA types (SMA, EMA, WMA)
+  - ✅ Configurable fast/slow periods
+  - ✅ Volume filter option
+  - ✅ Position sizing (fixed, volatility-based)
+  - ✅ Risk management (stop loss, take profit)
+  - ✅ Full BaseStrategy integration
+  - ✅ Parameter optimization ready
+- **Tests**: 15/15 passing
 
 #### ORB Strategy (src/strategies/examples/orb.py)
 - **Status**: NOT STARTED
@@ -159,12 +169,6 @@ tests/
 ├── test_utils/
 │   ├── test_config.py (18 tests) ✅
 │   └── test_logging.py (16 tests) ✅
-└── conftest.py (fixtures ready) ✅
-```
-
-### Pending Tests
-```
-tests/
 ├── test_data/
 │   ├── test_downloader.py ✅
 │   ├── test_cache.py ✅ (10/11 tests passing)
@@ -172,12 +176,19 @@ tests/
 │   ├── test_preprocessor_performance.py ✅
 │   └── test_features.py ✅ (12 tests)
 ├── test_strategies/
-│   ├── test_base.py ⏳
-│   ├── test_moving_average.py ⏳
-│   └── test_orb.py ⏳
-└── test_backtesting/
-    ├── test_vectorbt_engine.py ✅ (12 tests)
-    └── test_costs.py ⏳
+│   ├── test_base.py ✅ (22 tests)
+│   └── test_moving_average.py ✅ (15 tests)
+├── test_backtesting/
+│   ├── test_vectorbt_engine.py ✅ (12 tests)
+│   └── test_costs.py ✅ (26 tests)
+└── conftest.py (fixtures ready) ✅
+```
+
+### Pending Tests
+```
+tests/
+└── test_strategies/
+    └── test_orb.py ⏳
 ```
 
 ## Download Scripts Created
