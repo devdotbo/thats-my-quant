@@ -420,3 +420,26 @@ Start small and expand progressively:
 7. **No TODOs** - Complete every function fully
 8. **Run actual tests** - Always validate with real data
 
+## Documentation Management Rules
+
+1. **Single Source of Truth**: 
+   - `implementation_status.md` - Current project state and progress
+   - No duplicate status tracking in other files
+
+2. **Session Work**:
+   - Do NOT create session-specific MD files (SESSION_SUMMARY, HANDOFF, etc.)
+   - Update implementation_status.md with completed work
+   - Use git commits for detailed session history
+
+3. **File Organization**:
+   - `README.md` - User-facing overview
+   - Technical docs - Specific design/architecture topics
+   - `implementation_status.md` - Progress and next steps
+   - No "summary" or "handoff" files
+
+4. **When Adding Documentation**:
+   - Check if content already exists elsewhere
+   - Update existing files rather than creating new ones
+   - Keep documentation DRY (Don't Repeat Yourself)
+   - If unsure, add to implementation_status.md
+

@@ -20,6 +20,12 @@ data/
 *.xlsx
 *.xls
 
+# Documentation - no session files
+*SESSION*.md
+*SUMMARY*.md
+*HANDOFF*.md
+*CONTEXT*.md
+
 # Large files
 *.tar
 *.tar.gz
