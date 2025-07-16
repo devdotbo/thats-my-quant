@@ -222,8 +222,9 @@ tests/
 ### Notebooks Created
 ```
 notebooks/
-├── 01_moving_average_backtest.ipynb ✅  # MA crossover strategy demo
-└── 02_orb_strategy_backtest.ipynb ✅    # ORB strategy replication
+├── 01_moving_average_backtest.ipynb ✅    # MA crossover strategy demo
+├── 02_orb_strategy_backtest.ipynb ✅      # ORB strategy replication
+└── 03_monte_carlo_validation.ipynb ✅    # Monte Carlo validation demo
 ```
 
 ## Download Scripts Created
