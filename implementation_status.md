@@ -161,9 +161,21 @@
   - ✅ Based on Zarattini & Aziz (2023) paper
 - **Tests**: 12/12 passing
 
-### Validation Framework ⏳
+### Validation Framework ✅
 #### Walk-Forward (src/validation/walk_forward.py)
-- **Status**: NOT STARTED
+- **Status**: COMPLETE ✅
+- **Features**:
+  - ✅ Rolling and anchored window types
+  - ✅ Configurable in-sample/out-sample periods
+  - ✅ Multiple optimization metrics (Sharpe, Sortino, Win Rate, etc.)
+  - ✅ Custom scoring function support
+  - ✅ Overfitting detection and analysis
+  - ✅ Parameter stability tracking
+  - ✅ Performance decay analysis
+  - ✅ Results export (CSV, JSON)
+  - ✅ Parallel window processing
+  - ✅ Integration with VectorBT engine
+- **Tests**: 15/15 passing
 
 #### Monte Carlo (src/validation/monte_carlo.py)
 - **Status**: NOT STARTED
@@ -184,10 +196,13 @@ tests/
 │   └── test_features.py ✅ (12 tests)
 ├── test_strategies/
 │   ├── test_base.py ✅ (22 tests)
-│   └── test_moving_average.py ✅ (15 tests)
+│   ├── test_moving_average.py ✅ (15 tests)
+│   └── test_orb.py ✅ (12 tests)
 ├── test_backtesting/
 │   ├── test_vectorbt_engine.py ✅ (12 tests)
 │   └── test_costs.py ✅ (26 tests)
+├── test_validation/
+│   └── test_walk_forward.py ✅ (15 tests)
 └── conftest.py (fixtures ready) ✅
 ```
 
@@ -259,29 +274,40 @@ scripts/
 - **Backtest Notebooks Created**: 
   - Moving Average Crossover demonstration notebook
   - ORB Strategy replication notebook with paper comparison
+- **Walk-Forward Validation Framework**: Complete with all tests passing (15/15)
+  - Implements rolling and anchored window types
+  - Supports multiple optimization metrics
+  - Includes overfitting detection and parameter stability analysis
+  - Provides performance decay analysis over time
+  - Supports custom scoring functions
+  - Enables parallel processing for faster validation
 - **All Validations Passed**:
-  - pytest: All strategy tests passing (ORB + MA)
-  - mypy: Type hints verified (pandas stubs warning only)
+  - pytest: All tests passing (ORB + MA + Walk-Forward)
+  - mypy: Type hints verified (external library stubs warnings only)
   - ruff: All linting checks passed
 
 ## Critical Path Forward
-1. **Next**: Walk-Forward Validation Framework
-   - Create test file for walk-forward optimizer
-   - Implement sliding window approach
-   - Add in-sample/out-sample testing
-   - Performance tracking across windows
-2. **Then**: Monte Carlo Validation
-   - Random sampling of trade sequences
-   - Confidence interval calculation
+1. **Next**: Monte Carlo Validation Framework
+   - Create test file for Monte Carlo simulator
+   - Implement random sampling of trade sequences
+   - Add confidence interval calculation
    - Risk metric stability testing
-3. **Then**: Full System Integration
+   - Bootstrap resampling of returns
+2. **Then**: Full System Integration
    - End-to-end pipeline testing
    - Multi-strategy portfolio backtesting
    - Performance comparison framework
+   - Walk-forward optimization examples
+3. **Then**: Advanced Strategy Development
+   - Mean reversion strategies
+   - Pairs trading implementation
+   - Machine learning-based strategies
+   - Risk parity allocation
 4. **Finally**: Production Readiness
    - Live data integration
    - Real-time signal generation
    - Risk monitoring dashboard
+   - Performance attribution analysis
 
 ## Performance Targets
 - [x] Memory bandwidth: 22.5 GB/s (below target but functional)
