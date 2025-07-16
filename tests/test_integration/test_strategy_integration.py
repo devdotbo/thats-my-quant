@@ -35,23 +35,18 @@ class TestStrategyIntegration:
         if not data_path.exists():
             pytest.skip("Test data not available")
         
-        raw_data = pd.read_csv(data_path, compression='gzip')
-        
         # Process data
         preprocessor = DataPreprocessor(
             raw_data_dir=Path("data/raw/minute_aggs/by_symbol"),
             processed_data_dir=Path("data/processed"),
             cache_dir=Path("data/cache")
         )
-        processed = preprocessor.process(raw_data, 'AAPL')
+        processed = preprocessor.process('AAPL', ['2024_01'])
         
         # Add features
-        feature_eng = FeatureEngineer()
-        with_features = feature_eng.add_all_features(
-            processed,
-            features=['sma_20', 'sma_50', 'ema_12', 'ema_26', 'rsi_14', 
-                     'atr_14', 'bb_upper', 'bb_lower', 'volume_sma_20']
-        )
+        feature_eng = FeatureEngine()
+        # Add all features
+        with_features = feature_eng.add_all_features(processed)
         
         return with_features
     
@@ -85,23 +80,23 @@ class TestStrategyIntegration:
         # Verify results
         assert result.metrics['total_return'] is not None
         assert result.metrics['sharpe_ratio'] is not None
-        assert result.metrics['total_trades'] >= 0
+        assert result.metrics['trades_count'] >= 0
         
         # Check impact of costs
-        if result.metrics['total_trades'] > 0:
+        if result.metrics['trades_count'] > 0:
             # Average cost per trade should be reasonable
             total_cost = abs(result.metrics.get('total_commission', 0) + 
                            result.metrics.get('total_slippage', 0))
-            if result.metrics['total_trades'] > 0:
-                avg_cost_per_trade = total_cost / result.metrics['total_trades']
+            if result.metrics['trades_count'] > 0:
+                avg_cost_per_trade = total_cost / result.metrics['trades_count']
                 assert avg_cost_per_trade < 100, f"Cost per trade too high: ${avg_cost_per_trade:.2f}"
         
         print(f"\nMA Crossover Results (with costs):")
         print(f"  Total Return: {result.metrics['total_return']:.2%}")
         print(f"  Sharpe Ratio: {result.metrics['sharpe_ratio']:.2f}")
         print(f"  Max Drawdown: {result.metrics['max_drawdown']:.2%}")
-        print(f"  Total Trades: {result.metrics['total_trades']}")
-        if result.metrics['total_trades'] > 0:
+        print(f"  Total Trades: {result.metrics['trades_count']}")
+        if result.metrics['trades_count'] > 0:
             print(f"  Win Rate: {result.metrics.get('win_rate', 0):.1%}")
     
     def test_orb_intraday_strategy(self, engine, test_data):
@@ -144,7 +139,7 @@ class TestStrategyIntegration:
         
         print(f"\nORB Strategy Results:")
         print(f"  Total Return: {result.metrics['total_return']:.2%}")
-        print(f"  Total Trades: {result.metrics['total_trades']}")
+        print(f"  Total Trades: {result.metrics['trades_count']}")
         print(f"  Avg Trade Duration: {result.metrics.get('avg_trade_duration', 0):.1f} bars")
     
     def test_multi_strategy_portfolio(self, engine, test_data):
@@ -196,7 +191,7 @@ class TestStrategyIntegration:
             print(f"\n{name}:")
             print(f"  Return: {result.metrics['total_return']:.2%}")
             print(f"  Sharpe: {result.metrics['sharpe_ratio']:.2f}")
-            print(f"  Trades: {result.metrics['total_trades']}")
+            print(f"  Trades: {result.metrics['trades_count']}")
         
         print(f"\nCombined Portfolio:")
         print(f"  Total Return: {total_return:.2%}")
@@ -209,18 +204,17 @@ class TestStrategyIntegration:
         if not data_path.exists():
             pytest.skip("MSFT data not available")
         
-        # Load first week only
-        raw_data = pd.read_csv(data_path, compression='gzip', nrows=2000)
-        
         preprocessor = DataPreprocessor(
-            raw_data_dir=Path("data/raw"),
+            raw_data_dir=Path("data/raw/minute_aggs/by_symbol"),
             processed_data_dir=Path("data/processed"),
             cache_dir=Path("data/cache")
         )
-        processed = preprocessor.process(raw_data, 'MSFT')
+        processed = preprocessor.process('MSFT', ['2024_01'])
+        # Trim to first week only
+        processed = processed.head(2000)
         
         # Add features
-        feature_eng = FeatureEngineer()
+        feature_eng = FeatureEngine()
         data_with_features = feature_eng.add_moving_averages(
             processed,
             periods=[5, 10, 20, 30, 50]
@@ -337,7 +331,7 @@ class TestStrategyIntegration:
                 'return': result.metrics['total_return'],
                 'sharpe': result.metrics['sharpe_ratio'],
                 'max_dd': result.metrics['max_drawdown'],
-                'trades': result.metrics['total_trades'],
+                'trades': result.metrics['trades_count'],
                 'win_rate': result.metrics.get('win_rate', 0)
             })
         
@@ -358,14 +352,12 @@ class TestStrategyIntegration:
         if not minute_path.exists():
             pytest.skip("SPY minute data not available")
         
-        raw_data = pd.read_csv(minute_path, compression='gzip')
-        
         preprocessor = DataPreprocessor(
-            raw_data_dir=Path("data/raw"),
+            raw_data_dir=Path("data/raw/minute_aggs/by_symbol"),
             processed_data_dir=Path("data/processed"),
             cache_dir=Path("data/cache")
         )
-        minute_data = preprocessor.process(raw_data, 'SPY')
+        minute_data = preprocessor.process('SPY', ['2024_01'])
         
         # Create multiple timeframes
         timeframes = {
@@ -393,7 +385,7 @@ class TestStrategyIntegration:
         }
         
         # Add features to each timeframe
-        feature_eng = FeatureEngineer()
+        feature_eng = FeatureEngine()
         for tf_name, tf_data in timeframes.items():
             timeframes[tf_name] = feature_eng.add_moving_averages(tf_data, [20, 50])
         

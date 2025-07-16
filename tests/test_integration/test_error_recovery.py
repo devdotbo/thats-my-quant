@@ -76,11 +76,21 @@ class TestErrorRecovery:
         
         # Try to process it
         try:
-            raw_data = pd.read_csv(malformed_csv, compression='gzip')
+            # For testing, create a test symbol directory structure
+            test_symbol_dir = temp_dirs['raw'] / 'TEST'
+            test_symbol_dir.mkdir(exist_ok=True)
+            # Move malformed file to proper location
+            malformed_csv.rename(test_symbol_dir / 'TEST_2024_01.csv.gz')
+            
             # Processing should handle missing/invalid data
-            processed = preprocessor.process(raw_data, 'TEST')
+            preprocessor_test = DataPreprocessor(
+                raw_data_dir=temp_dirs['raw'],
+                processed_data_dir=temp_dirs['processed'],
+                cache_dir=temp_dirs['cache']
+            )
+            processed = preprocessor_test.process('TEST', ['2024_01'])
             # Should have cleaned the data
-            assert len(processed) <= len(raw_data)
+            assert len(processed) > 0
         except Exception as e:
             # Should fail gracefully
             assert True
@@ -344,7 +354,7 @@ class TestErrorRecovery:
         )
         
         # Should handle no trades gracefully
-        assert result.metrics['total_trades'] == 0
+        assert result.metrics['trades_count'] == 0
         assert result.metrics['total_return'] == 0
         
         # Monte Carlo should also handle this

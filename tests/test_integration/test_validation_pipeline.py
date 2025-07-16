@@ -29,21 +29,17 @@ class TestValidationPipeline:
         if not data_path.exists():
             pytest.skip("Test data not available")
         
-        raw_data = pd.read_csv(data_path, compression='gzip')
-        
         preprocessor = DataPreprocessor(
-            raw_data_dir=Path("data/raw"),
+            raw_data_dir=Path("data/raw/minute_aggs/by_symbol"),
             processed_data_dir=Path("data/processed"),
             cache_dir=Path("data/cache")
         )
-        processed = preprocessor.process(raw_data, 'AAPL')
+        processed = preprocessor.process('AAPL', ['2024_01'])
         
         # Add necessary features
-        feature_eng = FeatureEngineer()
-        with_features = feature_eng.add_all_features(
-            processed,
-            features=['sma_20', 'sma_50', 'rsi_14', 'atr_14']
-        )
+        feature_eng = FeatureEngine()
+        # Add all features  
+        with_features = feature_eng.add_all_features(processed)
         
         return with_features
     
