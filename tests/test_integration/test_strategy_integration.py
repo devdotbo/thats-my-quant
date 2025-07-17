@@ -59,13 +59,12 @@ class TestStrategyIntegration:
             'ma_type': 'sma'
         })
         
-        # Define realistic costs
-        cost_engine = TransactionCostEngine(
-            commission_model=CommissionModel(
-                maker_fee=0.0016,  # 0.16% Interactive Brokers
-                taker_fee=0.0016,
-                min_fee=1.0
-            )
+        # Define realistic costs using predefined profile
+        from src.backtesting.costs import create_cost_engine_from_profile
+        cost_engine = create_cost_engine_from_profile(
+            asset_class='equity',
+            liquidity_tier='large_cap_liquid',
+            safety_factor=1.0
         )
         
         # Run backtest with costs
@@ -228,13 +227,11 @@ class TestStrategyIntegration:
             'ma_type': ['sma', 'ema']
         }
         
-        strategy = MovingAverageCrossover()
-        
         # Run optimization
         result = engine.optimize_parameters(
-            strategy=strategy,
+            strategy_class=MovingAverageCrossover,
             data=data_with_features,
-            parameter_grid=param_grid,
+            param_grid=param_grid,
             metric='sharpe_ratio',
             initial_capital=100000
         )

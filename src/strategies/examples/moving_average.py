@@ -69,6 +69,11 @@ class MovingAverageCrossover(BaseStrategy):
         # Check risk parameters
         if self.parameters.get('risk_per_trade', 0) <= 0 or self.parameters.get('risk_per_trade', 1) > 0.1:
             self.logger.warning("Risk per trade should be between 0 and 0.1 (10%)")
+        
+        # Check position size
+        position_size = self.parameters.get('position_size', 1.0)
+        if position_size > 1.0 or position_size <= 0:
+            raise ValueError(f"Position size must be between 0 and 1.0, got {position_size}")
     
     def generate_signals(self, data: pd.DataFrame) -> pd.Series:
         """
