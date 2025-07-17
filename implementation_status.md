@@ -413,6 +413,10 @@ python benchmarks/run_all_benchmarks.py
 # Verify data is ready
 ls -lh data/raw/minute_aggs/by_symbol/*/*.csv.gz | wc -l
 # Should show 120 files (10 symbols × 12 months)
+
+# Run performance comparison demo
+python examples/performance_comparison_demo.py
+# Creates visualizations and HTML report in examples/output/
 ```
 
 ### Project State Summary
