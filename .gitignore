@@ -174,3 +174,9 @@ cache/
 # Compressed files from loguru
 *.gz
 .aider*
+
+# Failed optimization experiments
+optimize_parallel*.py
+
+# Temporary test scripts in root
+/test_*.py
