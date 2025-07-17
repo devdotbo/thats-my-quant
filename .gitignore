@@ -173,3 +173,4 @@ cache/
 
 # Compressed files from loguru
 *.gz
+.aider*

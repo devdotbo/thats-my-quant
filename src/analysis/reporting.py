@@ -333,10 +333,11 @@ class PerformanceReporter:
         """
         
         rankings = result.rankings
-        for idx, row in rankings.iterrows():
+        for idx_num, (idx, row) in enumerate(rankings.iterrows()):
+            rank = row.get('composite_rank', idx_num + 1)
             html += f"""
                 <tr>
-                    <td>{row.get('composite_rank', idx+1):.0f}</td>
+                    <td>{rank:.0f}</td>
                     <td><strong>{row['strategy']}</strong></td>
                     <td>{row.get('sharpe_ratio', 0):.2f}</td>
                     <td>{row.get('total_return', 0):.1%}</td>
