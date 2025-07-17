@@ -89,7 +89,7 @@ class TestStrategyVisualizer:
     @pytest.fixture
     def visualizer(self):
         """Create visualizer instance"""
-        return StrategyVisualizer(style='seaborn', figsize=(12, 8))
+        return StrategyVisualizer(style='seaborn-v0_8', figsize=(12, 8))
     
     @pytest.fixture
     def metrics_df(self, sample_results):
@@ -376,7 +376,7 @@ class TestStrategyVisualizer:
     
     def test_style_setting(self):
         """Test different matplotlib styles"""
-        styles = ['seaborn', 'ggplot', 'default']
+        styles = ['seaborn-v0_8', 'ggplot', 'default']
         
         for style in styles:
             try:

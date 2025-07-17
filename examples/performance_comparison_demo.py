@@ -58,12 +58,12 @@ def main():
         'MA_Fast': MovingAverageCrossover({
             'fast_period': 10,
             'slow_period': 30,
-            'ma_type': 'EMA'
+            'ma_type': 'ema'
         }),
         'MA_Slow': MovingAverageCrossover({
             'fast_period': 20,
             'slow_period': 50,
-            'ma_type': 'SMA'
+            'ma_type': 'sma'
         }),
         'ORB_5min': OpeningRangeBreakout({
             'range_minutes': 5,

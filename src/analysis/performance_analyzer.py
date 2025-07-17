@@ -46,7 +46,11 @@ class ComparisonResult:
         if metric not in self.rankings.columns:
             raise ValueError(f"Metric {metric} not found in rankings")
         
-        return self.rankings.nsmallest(n, metric)[['strategy', metric]]
+        # For most metrics, higher is better (except max_drawdown and volatility)
+        if metric in ['max_drawdown', 'volatility']:
+            return self.rankings.nsmallest(n, metric)[['strategy', metric]]
+        else:
+            return self.rankings.nlargest(n, metric)[['strategy', metric]]
     
     def get_statistical_summary(self) -> Dict[str, Any]:
         """Get summary of statistical test results"""

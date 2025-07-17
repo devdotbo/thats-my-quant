@@ -31,7 +31,7 @@ class StrategyVisualizer:
     - Correlation matrices
     """
     
-    def __init__(self, style: str = 'seaborn', figsize: Tuple[int, int] = (12, 8)):
+    def __init__(self, style: str = 'seaborn-v0_8', figsize: Tuple[int, int] = (12, 8)):
         """
         Initialize visualizer
         
@@ -43,9 +43,24 @@ class StrategyVisualizer:
         self.figsize = figsize
         self.logger = get_logger('visualizer')
         
-        # Set style
-        plt.style.use(style)
-        sns.set_palette("husl")
+        # Set style with fallback
+        try:
+            plt.style.use(style)
+        except OSError:
+            # Fallback to default if style not found
+            self.logger.warning(f"Style '{style}' not found, using default")
+            if 'seaborn' in style:
+                # Try modern seaborn style
+                try:
+                    plt.style.use('seaborn-v0_8')
+                    self.style = 'seaborn-v0_8'
+                except OSError:
+                    pass
+        
+        try:
+            sns.set_palette("husl")
+        except:
+            pass
     
     def plot_equity_curves(self,
                           results: Dict[str, BacktestResult],

@@ -54,8 +54,8 @@ scipy==1.11.4
 statsmodels==0.14.1
 
 # Time Series Analysis
-ta-lib==0.4.28  # Technical indicators
-pandas-ta==0.3.14b0  # More technical indicators
+# Note: Technical indicators are implemented in src/data/features.py
+# ta-lib and pandas-ta were removed as they're not used in the codebase
 
 # Logging and Monitoring
 loguru==0.7.2
