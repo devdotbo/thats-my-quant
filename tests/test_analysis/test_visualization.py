@@ -68,6 +68,7 @@ class TestStrategyVisualizer:
             sharpe = np.sqrt(252) * daily_returns.mean() / daily_returns.std()
             
             result = BacktestResult(
+                portfolio=None,
                 equity_curve=equity_series,
                 trades=trades,
                 metrics={
@@ -77,8 +78,8 @@ class TestStrategyVisualizer:
                     'win_rate': 0.55,
                     'total_trades': len(trades)
                 },
-                stats={},
-                orders=pd.DataFrame()
+                signals=pd.Series(0, index=dates),
+                positions=pd.Series(0, index=dates)
             )
             
             results[name] = result

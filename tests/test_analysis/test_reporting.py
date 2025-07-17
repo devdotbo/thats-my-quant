@@ -175,11 +175,12 @@ class TestPerformanceReporter:
             }
             
             results[name] = BacktestResult(
+                portfolio=None,
                 equity_curve=equity_series,
                 trades=trades,
                 metrics=metrics,
-                stats={},
-                orders=pd.DataFrame()
+                signals=pd.Series(0, index=dates),
+                positions=pd.Series(0, index=dates)
             )
         
         return results

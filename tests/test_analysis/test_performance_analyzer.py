@@ -65,6 +65,7 @@ class TestPerformanceAnalyzer:
             win_rate = (trades['pnl'] > 0).mean()
             
             result = BacktestResult(
+                portfolio=None,  # Mock portfolio object
                 equity_curve=equity_series,
                 trades=trades,
                 metrics={
@@ -75,8 +76,8 @@ class TestPerformanceAnalyzer:
                     'total_trades': len(trades),
                     'volatility': returns.std() * np.sqrt(252)
                 },
-                stats={},
-                orders=pd.DataFrame()
+                signals=pd.Series(0, index=dates),  # Mock signals
+                positions=pd.Series(0, index=dates)  # Mock positions
             )
             
             results[name] = result
@@ -370,6 +371,7 @@ class TestPerformanceAnalyzer:
         equity = pd.Series([100000] * 50 + [np.nan] * 50, index=dates)
         
         result = BacktestResult(
+            portfolio=None,
             equity_curve=equity,
             trades=pd.DataFrame(),
             metrics={
@@ -379,8 +381,8 @@ class TestPerformanceAnalyzer:
                 'win_rate': 0.5,
                 'total_trades': 10
             },
-            stats={},
-            orders=pd.DataFrame()
+            signals=pd.Series(0, index=equity.index),
+            positions=pd.Series(0, index=equity.index)
         )
         
         results = {'TestStrategy': result}
