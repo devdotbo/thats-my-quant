@@ -6,9 +6,11 @@ High-performance vectorized backtesting using VectorBT
 import pandas as pd
 import numpy as np
 import vectorbt as vbt
-from typing import Dict, Any, Optional, Union, List, Type
+from typing import Dict, Any, Optional, Union, List, Type, Callable
 from dataclasses import dataclass
 import itertools
+import optuna
+from optuna.trial import Trial
 
 from src.strategies.base import BaseStrategy
 from src.utils.logging import get_logger
@@ -307,6 +309,185 @@ class VectorBTEngine:
             best_metric=best_metric_value,
             results_df=results_df,
             all_results=[]  # Could store all BacktestResults if needed
+        )
+    
+    def optimize_parameters_bayesian(self,
+                                   strategy_class: Type[BaseStrategy],
+                                   data: pd.DataFrame,
+                                   param_space: Dict[str, Dict[str, Any]],
+                                   metric: str = 'sharpe_ratio',
+                                   initial_capital: float = 10000,
+                                   commission: float = 0.001,
+                                   n_trials: int = 100,
+                                   timeout: Optional[float] = None,
+                                   n_jobs: int = 1,
+                                   study_name: Optional[str] = None,
+                                   direction: str = 'maximize',
+                                   pruner: Optional[optuna.pruners.BasePruner] = None,
+                                   sampler: Optional[optuna.samplers.BaseSampler] = None,
+                                   storage: Optional[str] = None,
+                                   load_if_exists: bool = False) -> OptimizationResult:
+        """
+        Optimize strategy parameters using Bayesian optimization (Optuna)
+        
+        Args:
+            strategy_class: Strategy class to optimize
+            data: Market data
+            param_space: Parameter search space definition
+                Format: {
+                    'param_name': {
+                        'type': 'int'|'float'|'categorical',
+                        'low': min_value (for int/float),
+                        'high': max_value (for int/float),
+                        'choices': [choices] (for categorical),
+                        'step': step_size (optional for int/float),
+                        'log': True/False (optional for int/float)
+                    }
+                }
+            metric: Metric to optimize
+            initial_capital: Starting capital
+            commission: Commission rate
+            n_trials: Number of optimization trials
+            timeout: Timeout in seconds
+            n_jobs: Number of parallel jobs (-1 for all CPUs)
+            study_name: Name for the optuna study
+            direction: 'maximize' or 'minimize'
+            pruner: Optuna pruner for early stopping
+            sampler: Optuna sampler (default: TPE)
+            storage: Database URL for persistent storage (enables parallelization)
+                Example: "sqlite:///optimization.db"
+            load_if_exists: Whether to resume existing study
+            
+        Returns:
+            OptimizationResult with best parameters and all results
+        """
+        self.logger.info(f"Optimizing {strategy_class.__name__} with Bayesian optimization")
+        
+        # Create objective function
+        def objective(trial: Trial) -> float:
+            # Sample parameters from search space
+            params = {}
+            for param_name, param_config in param_space.items():
+                param_type = param_config['type']
+                
+                if param_type == 'int':
+                    params[param_name] = trial.suggest_int(
+                        param_name,
+                        param_config['low'],
+                        param_config['high'],
+                        step=param_config.get('step', 1),
+                        log=param_config.get('log', False)
+                    )
+                elif param_type == 'float':
+                    params[param_name] = trial.suggest_float(
+                        param_name,
+                        param_config['low'],
+                        param_config['high'],
+                        step=param_config.get('step'),
+                        log=param_config.get('log', False)
+                    )
+                elif param_type == 'categorical':
+                    params[param_name] = trial.suggest_categorical(
+                        param_name,
+                        param_config['choices']
+                    )
+                else:
+                    raise ValueError(f"Unknown parameter type: {param_type}")
+            
+            try:
+                # Create strategy instance
+                strategy = strategy_class(parameters=params)
+                
+                # Run backtest
+                result = self.run_backtest(
+                    strategy=strategy,
+                    data=data,
+                    initial_capital=initial_capital,
+                    commission=commission
+                )
+                
+                # Get metric value
+                metric_value = result.metrics.get(metric, -np.inf)
+                
+                # Report intermediate value for pruning
+                if pruner is not None:
+                    trial.report(metric_value, step=0)
+                    if trial.should_prune():
+                        raise optuna.TrialPruned()
+                
+                # Store trial results as user attributes
+                for key, value in result.metrics.items():
+                    if np.isfinite(value):
+                        trial.set_user_attr(key, value)
+                
+                return metric_value
+                
+            except Exception as e:
+                self.logger.warning(f"Trial failed with params {params}: {e}")
+                return -np.inf if direction == 'maximize' else np.inf
+        
+        # Create or load study
+        if sampler is None:
+            sampler = optuna.samplers.TPESampler(seed=42)
+        
+        if storage is not None:
+            # Use persistent storage for parallelization
+            study = optuna.create_study(
+                study_name=study_name,
+                storage=storage,
+                direction=direction,
+                sampler=sampler,
+                pruner=pruner,
+                load_if_exists=load_if_exists
+            )
+        else:
+            # In-memory study (single process only)
+            study = optuna.create_study(
+                study_name=study_name,
+                direction=direction,
+                sampler=sampler,
+                pruner=pruner
+            )
+        
+        # Run optimization
+        self.logger.info(f"Starting {n_trials} trials...")
+        study.optimize(
+            objective,
+            n_trials=n_trials,
+            timeout=timeout,
+            n_jobs=n_jobs,
+            show_progress_bar=True
+        )
+        
+        # Get results
+        best_trial = study.best_trial
+        best_params = best_trial.params
+        best_metric_value = best_trial.value
+        
+        # Convert all trials to DataFrame
+        trials_df = study.trials_dataframe()
+        
+        # Create results DataFrame with strategy parameters and metrics
+        results = []
+        for trial in study.trials:
+            if trial.state == optuna.trial.TrialState.COMPLETE:
+                result_dict = trial.params.copy()
+                # Add all user attributes (metrics)
+                result_dict.update(trial.user_attrs)
+                result_dict['trial_number'] = trial.number
+                result_dict[f'objective_{metric}'] = trial.value
+                results.append(result_dict)
+        
+        results_df = pd.DataFrame(results)
+        
+        self.logger.info(f"Best {metric}: {best_metric_value:.4f} with params: {best_params}")
+        self.logger.info(f"Completed {len(study.trials)} trials, {len(results)} successful")
+        
+        return OptimizationResult(
+            best_params=best_params,
+            best_metric=best_metric_value,
+            results_df=results_df,
+            all_results=[]  # Could store study object if needed
         )
     
     def calculate_metrics(self, 

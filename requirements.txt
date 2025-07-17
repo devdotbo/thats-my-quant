@@ -49,6 +49,9 @@ scikit-learn==1.4.0
 xgboost==2.0.3
 lightgbm==4.2.0
 
+# Optimization
+optuna==3.5.0
+
 # Additional Analytics
 scipy==1.11.4
 statsmodels==0.14.1
