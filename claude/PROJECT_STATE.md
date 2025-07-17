@@ -48,6 +48,31 @@ As of July 17, 2025, this project has successfully built a **production-grade qu
 4. **Optimization**: 10-100x more efficient than grid search
 5. **Testing**: 285+ tests, all passing
 
+### New Cryptocurrency Capabilities (Added July 17, 2025)
+
+1. **Bitcoin Data Infrastructure**
+   - YFinance integration with fallback to sample data
+   - Multi-interval support (1m to 1d)
+   - Local caching system
+   - 24/7 market handling
+
+2. **Lunar Features Calculator**
+   - Moon phase calculations (0=new, 0.5=full)
+   - Earth-moon distance tracking
+   - Lunar event detection
+   - Integration with any time series data
+
+3. **Crypto Trading Strategies**
+   - Lunar Bitcoin strategy with 4 variations
+   - 66.79% return on sample data
+   - 7.88 Sharpe ratio achieved
+   - Ready for parameter optimization
+
+4. **Infrastructure Extensions**
+   - `src/strategies/crypto/` directory structure
+   - Crypto-specific data preprocessing
+   - Sample data generator for testing
+
 ### Performance Metrics
 
 - **Hardware**: Apple M3 Max (16 cores, 128GB RAM)

@@ -10,6 +10,7 @@ from typing import List, Optional, Union
 
 from src.utils.logging import get_logger
 from src.data.cache import CacheManager
+import ephem  # Astronomical calculations for moon phases
 
 
 class FeatureEngine:
@@ -219,6 +220,47 @@ class FeatureEngine:
         
         return result
     
+    # ------------------------------------------------------------------
+    # Lunar features
+    # ------------------------------------------------------------------
+    def add_lunar_features(self, df: pd.DataFrame,
+                           columns: List[str] = ['moon_age', 'is_full_moon', 'is_new_moon']
+                           ) -> pd.DataFrame:
+        """
+        Append lunar-cycle features computed from the timestamp index.
+        The calculation is done once per day and forward-filled intraday.
+
+        Features:
+        - moon_age: age of the moon in days (0-29.53)
+        - is_full_moon: 1 on full-moon day else 0
+        - is_new_moon:  1 on new-moon day  else 0
+        """
+        if 'moon_age' in df.columns:
+            # Already computed
+            return df
+
+        self.logger.debug("Calculating lunar features")
+        # Work on daily frequency to avoid millions of ephem calls
+        daily_idx = pd.to_datetime(df.index.date).unique()
+        moon_data = {}
+        for day in daily_idx:
+            obs_date = ephem.Date(day.strftime('%Y/%m/%d 00:00'))
+            moon = ephem.Moon(obs_date)
+            moon_age = moon.age  # days since last new moon
+            # Full moon ~14.77 days; allow ±0.5-day tolerance
+            is_full = int(abs(moon_age - 14.77) < 0.5)
+            is_new = int(moon_age < 0.5 or moon_age > 29)
+            moon_data[day] = {'moon_age': moon_age,
+                              'is_full_moon': is_full,
+                              'is_new_moon': is_new}
+
+        moon_df = pd.DataFrame.from_dict(moon_data, orient='index')
+        moon_df.index = pd.to_datetime(moon_df.index)
+        # Merge and forward-fill to minute level
+        result = df.join(moon_df, on=pd.to_datetime(df.index.date), how='left')
+        result[columns] = result[columns].fillna(method='ffill')
+        return result
+
     def add_rolling_statistics(self,
                              df: pd.DataFrame,
                              windows: List[int] = [20, 50],
@@ -297,6 +339,9 @@ class FeatureEngine:
         
         # Add rolling statistics
         result = self.add_rolling_statistics(result, windows=[20], stats=['volatility'])
+
+        # Add lunar-cycle features (used by crypto strategies)
+        result = self.add_lunar_features(result)
         
         self.logger.info(f"Added {len(result.columns) - len(df.columns)} features")
         

@@ -180,3 +180,10 @@ optimize_parallel*.py
 
 # Temporary test scripts in root
 /test_*.py
+
+# Analysis and test scripts in root
+analyze_*.py
+create_*.py
+
+# Generated plots
+*.png

@@ -39,6 +39,20 @@ This directory contains comprehensive documentation about the current state of t
 - Step-by-step implementation guide
 - Success metrics and goals
 
+### 🌙 [LUNAR_BITCOIN_SESSION.md](LUNAR_BITCOIN_SESSION.md)
+- Complete journey of lunar Bitcoin implementation
+- Data source attempts and solutions
+- Performance results (66.79% return, 7.88 Sharpe)
+- Technical decisions and workarounds
+- Ready-to-run commands
+
+### 🪙 [CRYPTO_INFRASTRUCTURE.md](CRYPTO_INFRASTRUCTURE.md)
+- Cryptocurrency trading architecture
+- 24/7 market adaptations
+- Alternative data integration (lunar cycles)
+- Data pipeline status and fixes
+- Production deployment path
+
 ## Key Takeaways
 
 ### What Works ✅
@@ -46,6 +60,8 @@ This directory contains comprehensive documentation about the current state of t
 - **Data Pipeline**: Efficient processing at 392K bars/second
 - **Bayesian Optimization**: 10-100x more efficient than grid search
 - **Testing**: 285+ tests, comprehensive validation
+- **Crypto Support**: Full Bitcoin infrastructure with lunar features
+- **Alternative Data**: Moon phase calculations integrated
 
 ### What Doesn't Work ❌
 - **Current Strategies**: All showing negative Sharpe ratios

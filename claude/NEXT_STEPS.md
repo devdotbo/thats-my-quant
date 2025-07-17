@@ -363,6 +363,46 @@ class AlpacaPaperTrader:
 - Overnight for optimization runs
 - 1 month to production ready
 
+## Cryptocurrency Trading (New Priority)
+
+### Immediate Tasks
+1. **Fix Bitcoin Data Pipeline**
+   - Implement CoinGecko API integration
+   - Try Binance public API (no auth needed)
+   - Or upgrade Polygon subscription for crypto
+
+2. **Optimize Lunar Strategy**
+   - Run Bayesian optimization on real data
+   - Test different moon phase ranges
+   - Optimize hold periods (1-7 days)
+   - Find optimal stop loss levels
+
+3. **Expand Crypto Coverage**
+   - Add top 10 cryptocurrencies
+   - Test lunar effects on ETH, BNB, SOL
+   - Compare correlation strengths
+
+4. **Combine Strategies**
+   - Lunar + Technical indicators
+   - Lunar + Sentiment analysis
+   - Multi-timeframe confirmation
+
+### Crypto-Specific Infrastructure
+1. **24/7 Monitoring**
+   - Implement alert system
+   - Handle exchange downtime
+   - Add circuit breakers
+
+2. **Exchange Integration**
+   - Binance API for execution
+   - Multiple exchange support
+   - Fee optimization
+
+3. **Risk Management**
+   - Crypto-specific volatility models
+   - Correlation-based position sizing
+   - Flash crash protection
+
 ## Conclusion
 
 The path to profitability is clear:

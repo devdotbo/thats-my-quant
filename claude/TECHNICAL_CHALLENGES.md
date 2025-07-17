@@ -370,3 +370,95 @@ pip install vectorbt optuna
    - Future you will thank you
    - Others can learn
    - Prevents repeated mistakes
+
+## 9. Cryptocurrency Data Challenges
+
+### Challenge: Polygon.io Crypto Access Denied
+
+**Symptom:**
+```bash
+rclone copy s3polygon:flatfiles/global_crypto/minute_aggs_v1/2024/01/2024-01-01.csv.gz tmp/
+# ERROR: 403 Forbidden
+```
+
+**Root Cause:**
+- Crypto data requires separate subscription tier
+- Not included in standard market data plans
+- No clear documentation about this requirement
+
+**Discovery Process:**
+```bash
+# Could list directories
+rclone ls s3polygon:flatfiles/global_crypto/minute_aggs_v1/2024/01/
+# Could see file sizes
+3015708 2024-01-01.csv.gz
+# But couldn't download
+```
+
+**Workaround:**
+Switch to alternative data sources (yfinance, CoinGecko, etc.)
+
+### Challenge: YFinance Crypto Data Failure
+
+**Symptom:**
+```python
+yf.download("BTC-USD", period="1mo")
+# Returns empty DataFrame
+# JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+```
+
+**Root Cause:**
+- Yahoo Finance API changes/issues
+- Affects all tickers (stocks and crypto)
+- Possibly rate limiting or API deprecation
+
+**Attempted Solutions:**
+```python
+# Tried multiple ticker formats
+tickers = ["BTC-USD", "ETH-USD", "BTCUSD", "BTC=F"]
+# All failed with same error
+```
+
+**Final Solution:**
+Created sample data generator for development/testing
+
+### Challenge: 24/7 Market Adaptations
+
+**Issue:**
+Crypto markets trade continuously, unlike stocks
+
+**Required Changes:**
+1. Remove market hours checks
+2. Adjust volatility calculations for continuous trading
+3. Modify position sizing for different risk profile
+4. Handle weekend/holiday trading
+
+**Code Adaptations:**
+```python
+# Stock strategy assumes market hours
+if is_market_open():
+    trade()
+
+# Crypto strategy always ready
+trade()  # No time restrictions
+```
+
+### Challenge: Astronomical Calculations
+
+**Issue:**
+Need precise moon phase calculations for trading signals
+
+**Solution:**
+Used `ephem` library for astronomical computations
+
+**Implementation Details:**
+```python
+# Calculate moon phase as fraction
+lunation = (current_date - previous_new_moon) / (next_new_moon - previous_new_moon)
+# 0.0 = new moon, 0.5 = full moon
+```
+
+**Lessons Learned:**
+- Don't try to calculate astronomically yourself
+- Established libraries handle edge cases
+- Time zones matter for precise timing
